@@ -1,38 +1,22 @@
 [[source]]
-name = "pypi"
-url = "https://pypi.org/simple"
+url = "$CLOUDSMITH_PIP_INDEX_URL"
 verify_ssl = true
-
-[requires]
-python_version = "3.9"
+name = "pypi"
 
 [packages]
-aiofiles = "==23.1.0"
-anyio = "==4.0.0"
-asgiref = "==3.7.2"
-certifi = "==2023.7.22"
-cffi = "==1.16.0"
-charset-normalizer = "==3.2.0"
-click = "==8.1.7"
-cryptography = "==41.0.3"
-exceptiongroup = "==1.1.3"
-fastapi = "==0.103.1"
-h11 = "==0.14.0"
-httptools = "==0.6.0"
-idna = "==3.4"
-MarkupSafe = "==2.1.3"
-pycparser = "==2.21"
-pydantic = "==2.4.2"
-pyOpenSSL = "==23.2.0"
-PySocks = "==1.7.1"
-pyyaml = "==6.0.1"
-requests = "==2.31.0"
-rsa = "==4.9"
-six = "==1.16.0"
-sniffio = "==1.3.0"
-starlette = "==0.27.0"
-structlog = "==23.1.0"
-typing-extensions = "==4.8.0"
-urllib3 = "==2.0.5"
-xmltodict = "==0.13.0"
-yarl = "==1.9.2"
+fastapi = "==0.99.1"
+requests = "*"
+okta = "*"
+structlog = "*"
+mangum = "*"
+pydantic = "*"
+httpx = "*"
+
+[dev-packages]
+black = "*"
+pytest = "*"
+uvicorn = "*"
+bandit = "*"
+
+[requires]
+python_version = "3.11"
