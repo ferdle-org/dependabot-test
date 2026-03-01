@@ -1,0 +1,174 @@
+{
+  "name": "@zendesk/web-widget-classic",
+  "version": "0.0.1",
+  "author": "Zendesk",
+  "license": "All Rights Reserved",
+  "private": true,
+  "engines": {
+    "node": ">= 22.19.0",
+    "npm": ">= 10.9.3"
+  },
+  "scripts": {
+    "build:version:generate": "mkdir -p dist && git rev-parse --short HEAD > ./dist/VERSION_HASH",
+    "build": "yarn clean && yarn run build:version:generate && NODE_ENV=production webpack --config ./webpack.prod.config.js",
+    "clean": "rm -rf ./dist && mkdir -p ./dist",
+    "dev": "NODE_ENV=development yarn run build:version:generate && webpack serve",
+    "size": "bundlemon",
+    "test": "jest",
+    "e2e:server": "EMBEDDABLE_FRAMEWORK_ENV=e2e NODE_ENV=e2e SENTRY_EU_DSN=https://123@zendesk-eu.my.sentry.io/1 webpack serve --config ./webpack.e2e.config.js",
+    "e2e": "EMBEDDABLE_FRAMEWORK_ENV=e2e NODE_ENV=e2e jest -c ./jest-puppeteer.config.js --group=-visual-regressions",
+    "e2e:ci": "yarn e2e --runInBand --ci",
+    "e2e:debug": "EMBEDDABLE_FRAMEWORK_ENV=e2e NODE_ENV=e2e node --inspect-brk node_modules/.bin/jest -c ./jest-puppeteer.config.js",
+    "e2e:visual-regressions": "node ./script/start_chromium_in_docker.js && USE_DOCKER=true EMBEDDABLE_FRAMEWORK_ENV=e2e NODE_ENV=e2e jest -c ./jest-puppeteer.config.js --group=visual-regressions",
+    "e2e:visual-regressions:ci": "yarn e2e:visual-regressions --runInBand --u",
+    "test:performance": "node e2e/performance/performance.js",
+    "previewers:build": "yarn clean && yarn build:version:generate && NODE_ENV=production webpack --config ./previewers/webpack.prod.js",
+    "previewers:dev": "webpack serve --config ./previewers/webpack.dev.js"
+  },
+  "bundlemon": {
+    "files": [
+      {
+        "path": "./dist/public/web-widget-*[0-9]-*.js",
+        "maxSize": "200 KB"
+      },
+      {
+        "path": "./dist/public/web-widget-main-*.js",
+        "maxSize": "315 KB"
+      },
+      {
+        "path": "./dist/public/web-widget-chat-*.js",
+        "maxSize": "55 KB"
+      },
+      {
+        "path": "./dist/public/web-widget-talk-*.js",
+        "maxSize": "15 KB"
+      },
+      {
+        "path": "./dist/public/web-widget-lazy/*.js",
+        "maxSize": "180 KB"
+      },
+      {
+        "path": "./dist/public/web-widget-talk-sdk-*.js",
+        "maxSize": "20 KB"
+      },
+      {
+        "path": "./dist/public/web-widget-chat-sdk-*.js",
+        "maxSize": "60 KB"
+      }
+    ],
+    "reportOutput": [
+      [
+        "github",
+        {
+          "checkRun": "off",
+          "commitStatus": "off",
+          "prComment": "on-failure"
+        }
+      ]
+    ],
+    "subProject": "web-widget-classic"
+  },
+  "dependencies": {
+    "@twilio/voice-sdk": "^2.7.3",
+    "@zendesk/client-i18n-tools": "^21.0.0",
+    "@zendesk/widget-shared-services": "*",
+    "@zendeskgarden/container-focusjail": "^1.2.2",
+    "@zendeskgarden/container-modal": "^0.8.2",
+    "@zendeskgarden/css-bedrock": "^8.0.1",
+    "@zendeskgarden/css-variables": "^6.4.5",
+    "@zendeskgarden/react-avatars": "^8.18.0",
+    "@zendeskgarden/react-buttons": "^8.9.0",
+    "@zendeskgarden/react-dropdowns": "^8.49.4",
+    "@zendeskgarden/react-forms": "^8.49.4",
+    "@zendeskgarden/react-loaders": "^8.17.0",
+    "@zendeskgarden/react-modals": "^8.17.0",
+    "@zendeskgarden/react-notifications": "^8.17.1",
+    "@zendeskgarden/react-selection": "^7.1.4",
+    "@zendeskgarden/react-theming": "^8.17.0",
+    "@zendeskgarden/react-tooltips": "^8.74.2",
+    "@zendeskgarden/svg-icons": "~5.0.0",
+    "async": "^2.6.4",
+    "chat-web-sdk": "git+ssh://git@github.com/zendesk/chat-web-sdk.git#v32.0.0",
+    "classnames": "^2.2.5",
+    "color": "~3.2.1",
+    "final-form": "^4.18.6",
+    "history": "^4.10.0",
+    "libphonenumber-js": "^1.10.48",
+    "lodash": "^4.17.21",
+    "polished": "^4.2.2",
+    "prop-types": "^15.7.2",
+    "re-reselect": "^2.2.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-final-form": "^6.3.0",
+    "react-linkify": "^0.2.2",
+    "react-redux": "^7.1.0",
+    "react-router-dom": "^5.1.2",
+    "react-slick": "^0.30.2",
+    "react-transition-group": "^2.9.0",
+    "redux": "^4.0.4",
+    "redux-logger": "^3.0.6",
+    "redux-thunk": "^2.3.0",
+    "regenerator-runtime": "^0.13.9",
+    "reselect": "^3.0.1",
+    "sanitize-html": "^2.12.1",
+    "socket.io-client": "^4.7.5",
+    "sprintf-js": "^1.1.1",
+    "stream-browserify": "^3.0.0",
+    "styled-components": "^5.3.11",
+    "superagent": "^10.3.0",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.21.8",
+    "@babel/preset-env": "^7.21.5",
+    "@babel/preset-react": "^7.18.6",
+    "@babel/register": "^7.21.0",
+    "@pmmmwh/react-refresh-webpack-plugin": "^0.5.7",
+    "@svgr/webpack": "^6.0.0",
+    "@wordpress/jest-puppeteer-axe": "3.1.0",
+    "autoprefixer": "^9.7.3",
+    "babel-loader": "^9.1.2",
+    "babel-plugin-lodash": "^3.3.4",
+    "babel-plugin-styled-components": "^2.1.4",
+    "bundlemon": "^3.1.0",
+    "clean-webpack-plugin": "^4.0.0",
+    "css-loader": "^3.4.0",
+    "expect-puppeteer": "^4.4.0",
+    "file-loader": "^6.2.0",
+    "jest": "^30.2.0",
+    "jest-dev-server": "^6.2.0",
+    "jest-environment-jsdom": "^30.2.0",
+    "jest-environment-puppeteer": "^6.2.0",
+    "jest-image-snapshot": "^6.5.1",
+    "jest-puppeteer": "^6.2.0",
+    "mockery": "~1.4.0",
+    "mutationobserver-shim": "^0.3.7",
+    "postcss-loader": "^3.0.0",
+    "pptr-testing-library": "^0.7.0",
+    "puppeteer": "15.5.0",
+    "react-refresh": "^0.10.0",
+    "react-test-renderer": "^16.8.6",
+    "sass": "^1.69.5",
+    "sass-loader": "^13.2.0",
+    "snapshot-diff": "^0.6.1",
+    "source-map-loader": "^3.0.1",
+    "terser-webpack-plugin": "^5.3.1",
+    "webpack": "^5.101.3",
+    "webpack-bundle-analyzer": "^4.10.0",
+    "webpack-cli": "^6.0.1",
+    "webpack-dev-server": "^5.2.3",
+    "webpack-manifest-plugin": "^5.0.1",
+    "webpack-merge": "^6.0.1",
+    "webpack-stats-plugin": "^1.1.1"
+  },
+  "browserslist": [
+    "last 2 Chrome versions",
+    "last 2 Firefox versions",
+    "last 2 Safari versions",
+    "last 2 iOS versions",
+    "last 2 Android versions",
+    "last 2 ChromeAndroid versions"
+  ],
+  "sideEffects": false
+}

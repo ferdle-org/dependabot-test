@@ -1,0 +1,125 @@
+{
+  "name": "@zendesk/web-widget-messenger",
+  "version": "0.0.1",
+  "license": "MIT",
+  "private": true,
+  "engines": {
+    "node": ">= 22.19.0",
+    "npm": ">= 10.9.3"
+  },
+  "scripts": {
+    "build:version:generate": "mkdir -p dist && git rev-parse --short HEAD > ./dist/VERSION_HASH",
+    "build": "yarn clean && yarn run build:version:generate && NODE_ENV=production webpack --config ./webpack.prod.config.js && node scripts/copy-test-html-files",
+    "clean": "rm -rf ./dist && mkdir -p ./dist",
+    "type-check": "tsc",
+    "dev": "yarn run build:version:generate && NODE_ENV=development webpack serve",
+    "size": "bundlemon",
+    "test": "jest",
+    "e2e": "playwright test",
+    "e2e:server": "yarn run build:version:generate && USE_DEV_ALIASES=true EMBEDDABLE_FRAMEWORK_ENV=e2e yarn workspace @zendesk/web-widget-messenger webpack serve --config ./webpack.e2e.config.js"
+  },
+  "bundlemon": {
+    "files": [
+      {
+        "path": "./dist/public/web-widget-*[0-9]-*.js",
+        "maxSize": "320 KB"
+      },
+      {
+        "path": "./dist/public/web-widget-main-*.js",
+        "maxSize": "407 KB"
+      }
+    ],
+    "reportOutput": [
+      [
+        "github",
+        {
+          "checkRun": "off",
+          "commitStatus": "off",
+          "prComment": "on-failure"
+        }
+      ]
+    ],
+    "subProject": "web-widget-messenger"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.10.1",
+    "@babel/core": "^7.21.8",
+    "@babel/plugin-transform-react-jsx": "^7.17.3",
+    "@babel/preset-env": "^7.21.5",
+    "@babel/preset-react": "^7.18.6",
+    "@playwright/test": "^1.49.1",
+    "@pmmmwh/react-refresh-webpack-plugin": "^0.5.7",
+    "@svgr/webpack": "^6.0.0",
+    "@testing-library/dom": "^8.20.1",
+    "@types/jsonwebtoken": "^9.0.5",
+    "@types/react-dom": "^17.0.2",
+    "@types/react-redux": "^7.1.0",
+    "@types/react-router-dom": "^5.3.3",
+    "@types/react-transition-group": "^4.4.12",
+    "@types/styled-components": "^5.1.36",
+    "@types/tabbable": "^3.1.2",
+    "@types/uuid": "^8.3.2",
+    "autoprefixer": "^10.4.7",
+    "babel-loader": "^9.1.2",
+    "babel-plugin-lodash": "^3.3.4",
+    "babel-plugin-styled-components": "^2.1.4",
+    "bundlemon": "^3.1.0",
+    "clean-webpack-plugin": "^4.0.0",
+    "css-loader": "^3.4.0",
+    "dotenv": "^17.2.1",
+    "history": "^4.10.1",
+    "jest": "^30.2.0",
+    "jest-environment-jsdom": "^30.2.0",
+    "jsonwebtoken": "^9.0.3",
+    "postcss-loader": "^3.0.0",
+    "redux-mock-store": "^1.2.1",
+    "source-map-loader": "^3.0.1",
+    "terser-webpack-plugin": "^5.3.1",
+    "typescript": "^4.5.2",
+    "webpack": "^5.101.3",
+    "webpack-bundle-analyzer": "^4.10.0",
+    "webpack-cli": "^6.0.1",
+    "webpack-dev-server": "^5.2.3",
+    "webpack-manifest-plugin": "^5.0.1",
+    "webpack-merge": "^6.0.1",
+    "webpack-stats-plugin": "^1.1.1"
+  },
+  "dependencies": {
+    "@reduxjs/toolkit": "^1.9.7",
+    "@twilio/voice-sdk": "^2.7.3",
+    "@zendesk/client-i18n-tools": "^21.0.0",
+    "@zendesk/conversation-components": "*",
+    "@zendesk/sunco-client": "*",
+    "@zendesk/widget-shared-services": "*",
+    "@zendeskgarden/css-bedrock": "^8.0.1",
+    "@zendeskgarden/react-buttons": "^8.75.1",
+    "@zendeskgarden/react-loaders": "^8.75.1",
+    "@zendeskgarden/react-theming": "^8.75.1",
+    "@zendeskgarden/svg-icons": "^6.27.0",
+    "bcp47-validate": "^1.0.0",
+    "jwt-decode": "^3.1.2",
+    "polished": "^4.2.2",
+    "prop-types": "^15.7.2",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-redux": "^7.1.0",
+    "react-refresh": "^0.10.0",
+    "react-router-dom": "^5.1.2",
+    "react-transition-group": "^4.4.0",
+    "redux-logger": "^3.0.6",
+    "regenerator-runtime": "^0.13.9",
+    "stream-browserify": "^3.0.0",
+    "styled-components": "^5.3.11",
+    "superagent": "^10.3.0",
+    "tabbable": "^6.2.0",
+    "uuid": "^8.3.2"
+  },
+  "browserslist": [
+    "last 2 Chrome versions",
+    "last 2 Firefox versions",
+    "last 2 Safari versions",
+    "last 2 iOS versions",
+    "last 2 Android versions",
+    "last 2 ChromeAndroid versions"
+  ]
+}

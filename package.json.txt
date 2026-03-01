@@ -1,0 +1,90 @@
+{
+  "name": "embeddable-framework",
+  "version": "0.1.0",
+  "author": "Zendesk",
+  "license": "All Rights Reserved",
+  "private": true,
+  "description": "3rd party embeddable framework and API",
+  "engines": {
+    "node": ">= 22.19.0",
+    "npm": ">= 10.9.3",
+    "nvm": "= 0.39.2"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "turbo run build --output-logs=new-only --filter=!dashboard",
+    "build:production": "turbo run build --output-logs=new-only --filter=!dashboard",
+    "dev": "USE_DEV_ALIASES=true turbo run dev --filter=dashboard --filter=@zendesk/web-widget-classic --filter=@zendesk/web-widget-messenger",
+    "dev:dashboard": "USE_DEV_ALIASES=true turbo run dev --filter=@zendesk/web-widget-classic --filter=@zendesk/web-widget-messenger",
+    "lint:js": "eslint *.js config script packages --fix",
+    "lint:other": "prettier --check \"**/*.{css,scss,json,md}\" --write",
+    "lint": "npm run lint:js && npm run lint:other",
+    "test": "EMBEDDABLE_FRAMEWORK_ENV=development turbo run test --output-logs=new-only"
+  },
+  "husky": {
+    "hooks": {
+      "pre-push": "lint-staged",
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{ts,js,css,scss,json,md}": [
+      "prettier --write"
+    ],
+    "*.{ts,js}": [
+      "eslint --fix"
+    ]
+  },
+  "resolutions": {
+    "@babel/traverse": "^7.26.9",
+    "@types/react": "^18.3.28",
+    "axios": "^1.12.0",
+    "form-data": "^4.0.4",
+    "get-intrinsic": "^1.1.0",
+    "qs": "6.14.1",
+    "tar-fs": "^2.1.4",
+    "wait-on": "^7.2.0",
+    "ws": "^8.17.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.21.5",
+    "@babel/core": "^7.21.8",
+    "@babel/preset-env": "^7.21.5",
+    "@babel/preset-react": "^7.18.6",
+    "@babel/preset-typescript": "^7.21.5",
+    "@testing-library/dom": "^7.29.0",
+    "@testing-library/jest-dom": "^5.11.6",
+    "@testing-library/react": "^11.2.2",
+    "@testing-library/user-event": "^14.4.3",
+    "@trivago/prettier-plugin-sort-imports": "^2.0.2",
+    "@typescript-eslint/eslint-plugin": "^5.0.0",
+    "@typescript-eslint/parser": "^5.0.0",
+    "babel-eslint": "^10.1.0",
+    "babel-jest": "^30.2.0",
+    "babel-plugin-dynamic-import-node": "^2.3.3",
+    "babel-plugin-module-resolver": "^5.0.0",
+    "babel-plugin-styled-components": "^2.1.4",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^6.0.0",
+    "eslint-plugin-babel": "^5.3.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jest": "^27.9.0",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-lodash": "^6.0.0",
+    "eslint-plugin-prettier": "^3.1.0",
+    "eslint-plugin-react": "^7.12.2",
+    "eslint-plugin-react-hooks": "^1.6.1",
+    "husky": "^1.3.1",
+    "jest": "^30.2.0",
+    "jest-environment-jsdom": "^30.2.0",
+    "jest-prop-type-error": "^1.1.0",
+    "jest-styled-components": "^7.2.0",
+    "lint-staged": "^10.5.2",
+    "prettier": "^2.2.1",
+    "turbo": "^1.10.1",
+    "typescript": "^4.9.5"
+  },
+  "packageManager": "yarn@3.6.3"
+}

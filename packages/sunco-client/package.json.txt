@@ -1,0 +1,44 @@
+{
+  "name": "@zendesk/sunco-client",
+  "version": "0.0.1",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "license": "MIT",
+  "publishConfig": {
+    "registry": "https://zdrepo.jfrog.io/artifactory/api/npm/npm/"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "yarn clean && yarn check-types && NODE_ENV=production babel --extensions '.ts' ./src --out-dir ./dist --ignore '**/__tests__,src/@types' --copy-files --no-copy-ignored",
+    "clean": "rm -rf ./dist && mkdir -p ./dist",
+    "dev": "NODE_ENV=development babel --extensions '.ts' ./src --out-dir ./dist --copy-files --source-maps --watch",
+    "check-types": "tsc",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@zendesk/widget-shared-services": "*",
+    "faye": "github:zendesk/faye#6b4daabef9b95d8cee422fe9b929ce680e5d4523"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.21.5",
+    "@babel/core": "^7.21.8",
+    "@babel/preset-env": "^7.21.5",
+    "@babel/preset-typescript": "^7.21.5",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^22.9.0",
+    "babel-plugin-module-resolver": "^5.0.0",
+    "jest": "^30.2.0",
+    "typescript": "^4.5.2"
+  },
+  "browserslist": [
+    "last 2 Chrome versions",
+    "last 2 Firefox versions",
+    "last 2 Safari versions",
+    "last 2 iOS versions",
+    "last 2 Android versions",
+    "last 2 ChromeAndroid versions"
+  ],
+  "sideEffects": false
+}
