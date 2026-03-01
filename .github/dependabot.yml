@@ -1,10 +1,5 @@
 version: 2
-registries:
-  artifactory:
-    type: npm-registry
-    url: https://zdrepo.jfrog.io/zdrepo/api/npm/npm
-    username: ${{secrets.ARTIFACTORY_USERNAME}}
-    password: ${{secrets.ARTIFACTORY_API_KEY}}
+
 updates:
   - package-ecosystem: 'npm'
     directories:
@@ -29,4 +24,3 @@ updates:
       - 'version-update'
     commit-message:
       prefix: 'chore(deps): '
-    registries: '*'
