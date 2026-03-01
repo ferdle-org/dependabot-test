@@ -1,0 +1,32 @@
+version: 2
+registries:
+  artifactory:
+    type: npm-registry
+    url: https://zdrepo.jfrog.io/zdrepo/api/npm/npm
+    username: ${{secrets.ARTIFACTORY_USERNAME}}
+    password: ${{secrets.ARTIFACTORY_API_KEY}}
+updates:
+  - package-ecosystem: 'npm'
+    directories:
+      - '/packages/conversation-components'
+      - '/packages/framework'
+      - '/packages/shared-services'
+      - '/packages/sunco-client'
+      - '/packages/web-widget-messenger'
+    allow:
+      - dependency-type: 'production'
+    ignore:
+      - dependency-name: '*'
+        update-types:
+          - 'version-update:semver-major'
+    open-pull-requests-limit: 10
+    schedule:
+      interval: 'daily'
+      time: '07:00'
+      timezone: 'Europe/Berlin'
+    labels:
+      - 'dependencies'
+      - 'version-update'
+    commit-message:
+      prefix: 'chore(deps): '
+    registries: '*'
